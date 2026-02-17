@@ -4,174 +4,79 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>화이트데이 이벤트</title>
-
 <style>
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
-button { -webkit-appearance: none; appearance: none; font: inherit; }
-
 body{
-  margin:0;
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:24px;
-  overflow:hidden;
-
-  background-image:
-    linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
-    url("01.jpg");
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
-  transition: background-image .5s ease;
-
-  font-family: system-ui, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  margin:0; min-height:100vh; display:flex; justify-content:center; align-items:center; padding:24px; overflow:hidden;
+  /* 배경 이미지 (파일이 없다면 아래 URL이 작동합니다) */
+  background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url("https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=2070");
+  background-size:cover; background-position:center; transition: background-image .5s ease;
+  font-family: system-ui, sans-serif;
 }
-
 .card{
-  width:100%;
-  max-width:420px;
-  background:rgba(255,255,255,.95);
-  border-radius:20px;
-  padding:32px;
-  text-align:center;
-  box-shadow:0 15px 40px rgba(0,0,0,.25);
-  position:relative;
-  z-index:10; /* ✅ 클릭 안 막히게 */
+  width:100%; max-width:420px; background:rgba(255,255,255,.95); border-radius:20px; padding:32px; text-align:center; box-shadow:0 15px 40px rgba(0,0,0,.25); z-index:10;
 }
-
-h1{
-  font-size:20px;
-  line-height:1.6;
-  margin:0 0 24px;
-}
-
-.btn-container{
-  position:relative;
-  width:280px;
-  height:56px;
-  margin:0 auto;
-  touch-action: manipulation; /* ✅ 모바일 탭 반응 개선 */
-}
-
+h1{ font-size:22px; margin-bottom:24px; color: #333; }
+.btn-container{ position:relative; width:100%; height:60px; margin-top: 20px; }
 .btn{
-  position:absolute;
-  top:0;
-  width:120px;
-  height:48px;
-  border:none;
-  border-radius:30px;
-  font-size:16px;
-  cursor:pointer;
-  user-select:none;
-  z-index:20;            /* ✅ 클릭 안 막히게 */
-  pointer-events:auto;   /* ✅ 클릭 안 막히게 */
-  transition: transform .15s ease;
+  position:absolute; width:120px; height:48px; border:none; border-radius:30px; font-size:16px; cursor:pointer; transition: transform .15s ease;
 }
-
-.btn:active{ transform:scale(.98); }
-
-.yes{ left:0; background:#ff4d6d; color:#fff; }
-.no { left:160px; background:#d6d6d6; color:#111; }
-
-.result{
-  margin-top:18px;
-  font-size:20px;
-  font-weight:700;
-  color:#ff4d6d;
-  display:none;
-}
-
-.heart{
-  position:fixed;
-  pointer-events:none;
-  animation: float 2.8s linear forwards;
-  z-index:5;
-}
-
-@keyframes float{
-  0%{ transform:translateY(0); opacity:1; }
-  100%{ transform:translateY(-300px); opacity:0; }
-}
+.yes{ left: 10%; background:#ff4d6d; color:#fff; }
+.no { right: 10%; background:#d6d6d6; color:#111; z-index: 100; } /* No 버튼을 상단으로 */
+.result{ margin-top:24px; font-size:20px; font-weight:700; color:#ff4d6d; display:none; }
+.heart{ position:fixed; pointer-events:none; animation: float 2.8s linear forwards; z-index:5; font-size: 24px; }
+@keyframes float{ 0%{ transform:translateY(0); opacity:1; } 100%{ transform:translateY(-100vh); opacity:0; } }
 </style>
 </head>
-
 <body>
   <div class="card">
-    <h1>
-      화이트데이 요리사 하기
-    </h1>
-
-    <div class="btn-container" id="btnArea">
-      <button class="btn yes" id="yesBtn" type="button">Yes</button>
-      <button class="btn no" id="noBtn" type="button">No</button>
+    <h1>화이트데이 요리사 하기 👨‍🍳</h1>
+    <div class="btn-container">
+      <button class="btn yes" id="yesBtn">Yes</button>
+      <button class="btn no" id="noBtn">No</button>
     </div>
-
-    <div class="result" id="result">❤️ 소정이가 화이트데이 요리사 확정 ❤️</div>
+    <div class="result" id="result">❤️ 소정이가 요리사 확정! ❤️</div>
   </div>
 
 <script>
-(function () {
-  const yesBtn = document.getElementById("yesBtn") || document.querySelector(".yes");
-  const noBtn  = document.getElementById("noBtn")  || document.querySelector(".no");
-  const btnArea = document.getElementById("btnArea") || document.querySelector(".btn-container");
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
   const result = document.getElementById("result");
 
-  if (!yesBtn || !noBtn || !btnArea) {
-    // 요소가 없으면(복붙 실수) 그냥 종료
-    return;
-  }
-
+  // Yes 클릭 이벤트
   yesBtn.addEventListener("click", () => {
-    document.body.style.backgroundImage =
-      'linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url("02.jpg")';
-    if (result) result.style.display = "block";
+    document.body.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url("https://images.unsplash.com/photo-1559333086-b0a56225a93c?q=80&w=1974")';
+    result.style.display = "block";
     createHearts();
   });
 
+  // No 버튼 도망치기 함수
+  function moveNo() {
+    // 화면 전체를 기준으로 랜덤 위치 계산
+    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+    
+    noBtn.style.position = "fixed"; // 화면 어디든 이동 가능하게
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+  }
+
+  noBtn.addEventListener("mouseenter", moveNo);
+  noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNo(); });
+  noBtn.addEventListener("click", (e) => { e.preventDefault(); moveNo(); });
+
   function createHearts(){
-    for(let i=0;i<20;i++){
-      const h=document.createElement("div");
-      h.className="heart";
-      h.textContent="❤️";
-      h.style.left = (Math.random()*window.innerWidth) + "px";
-      h.style.top  = window.innerHeight + "px";
+    for(let i=0; i<30; i++){
+      const h = document.createElement("div");
+      h.className = "heart";
+      h.textContent = "❤️";
+      h.style.left = (Math.random() * 100) + "vw";
+      h.style.top = "100vh";
+      h.style.fontSize = (Math.random() * 20 + 10) + "px";
       document.body.appendChild(h);
-      setTimeout(()=>h.remove(), 2800);
+      setTimeout(() => h.remove(), 2800);
     }
   }
-
-  function moveNo(){
-    const w = noBtn.offsetWidth || 120;
-    const h = noBtn.offsetHeight || 48;
-    const maxX = btnArea.clientWidth - w;
-    const maxY = btnArea.clientHeight - h;
-
-    const x = Math.max(0, Math.random()*maxX);
-    const y = Math.max(0, Math.random()*maxY);
-
-    noBtn.style.left = x + "px";
-    noBtn.style.top  = y + "px";
-  }
-
-  // PC: 올리면 도망
-  noBtn.addEventListener("mouseenter", moveNo);
-
-  // 모바일: 누르려는 순간 도망
-  noBtn.addEventListener("touchstart", (e) => {
-    e.preventDefault();
-    moveNo();
-  }, { passive:false });
-
-  // 클릭도 방지
-  noBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    moveNo();
-  });
-
-})();
 </script>
 </body>
 </html>

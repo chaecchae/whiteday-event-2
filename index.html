@@ -19,10 +19,10 @@ body {
   padding: 24px;
   overflow: hidden;
 
-  /* 배경 이미지: 파일이 없어도 작동하도록 샘플 URL을 넣었습니다. 본인 파일로 바꾸려면 01.jpg로 수정하세요 */
+  /* ✅ 수정됨: 업로드하신 01.jpg 파일로 배경 설정 */
   background-image:
     linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-    url("https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=2070");
+    url("01.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -70,7 +70,6 @@ h1 {
   z-index: 20;
 }
 
-/* Yes 버튼: 고정 위치 */
 .yes {
   left: 10%;
   background: #ff4d6d;
@@ -79,12 +78,11 @@ h1 {
 }
 .yes:active { transform: scale(0.95); }
 
-/* No 버튼: 순간이동을 위해 transition을 삭제(none)함 */
 .no {
   right: 10%;
   background: #d6d6d6;
   color: #111;
-  transition: none !important; /* 무빙을 빠르게 만들기 위한 핵심 */
+  transition: none !important; /* 순간이동 무빙 유지 */
 }
 
 .result {
@@ -128,50 +126,40 @@ h1 {
   const noBtn = document.getElementById("noBtn");
   const result = document.getElementById("result");
 
-  // [1] Yes 버튼 클릭 시
   yesBtn.addEventListener("click", () => {
-    // 클릭 시 배경 변경 (본인 파일이 있다면 02.jpg로 수정)
+    /* ✅ 수정됨: Yes 클릭 시 업로드하신 02.jpg 파일로 배경 변경 */
     document.body.style.backgroundImage =
-      'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("https://images.unsplash.com/photo-1559333086-b0a56225a93c?q=80&w=1974")';
+      'linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url("02.jpg")';
     
     if (result) result.style.display = "block";
     createHearts();
   });
 
-  // [2] No 버튼 무빙 함수 (전체 화면 기준 순간이동)
   function moveNo() {
     const btnWidth = noBtn.offsetWidth;
     const btnHeight = noBtn.offsetHeight;
-
-    // 화면 크기 내에서 랜덤 좌표 생성 (가장자리 20px 여유)
     const maxX = window.innerWidth - btnWidth - 20;
     const maxY = window.innerHeight - btnHeight - 20;
 
     const randomX = Math.max(10, Math.random() * maxX);
     const randomY = Math.max(10, Math.random() * maxY);
 
-    // 버튼을 absolute에서 fixed로 바꿔서 카드 밖으로 나가게 함
     noBtn.style.position = "fixed";
     noBtn.style.left = randomX + "px";
     noBtn.style.top = randomY + "px";
   }
 
-  // PC: 마우스만 올려도 즉시 도망
   noBtn.addEventListener("mouseover", moveNo);
-
-  // 모바일: 터치 시 즉시 도망
   noBtn.addEventListener("touchstart", (e) => {
     e.preventDefault();
     moveNo();
   }, { passive: false });
 
-  // 클릭 방지
   noBtn.addEventListener("click", (e) => {
     e.preventDefault();
     moveNo();
   });
 
-  // [3] 하트 팡팡 효과
   function createHearts(){
     for(let i=0; i<30; i++){
       const h = document.createElement("div");
